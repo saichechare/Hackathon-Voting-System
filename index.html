@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HackVote - Hackathon Voting System</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Heart Rain Container -->
+    <div class="heart-rain-container" id="heartRainContainer"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-code"></i>
+                    <h1>HackVote</h1>
+                </div>
+                <nav class="nav">
+                    <a href="#projects" class="nav-link">Projects</a>
+                    <a href="#stats" class="nav-link">Statistics</a>
+                    <button class="submit-btn" id="submitBtn">
+                        <i class="fas fa-plus"></i>
+                        Submit Project
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h2 class="hero-title">Vote for the Best Hackathon Projects</h2>
+                <p class="hero-description">Discover amazing projects across different categories and vote for your favorites!</p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="totalProjects">0</span>
+                        <span class="stat-label">Projects</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="totalVotes">0</span>
+                        <span class="stat-label">Total Votes</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">3</span>
+                        <span class="stat-label">Categories</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Category Filter -->
+    <section class="category-filter">
+        <div class="container">
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-category="all">
+                    <i class="fas fa-th-large"></i>
+                    All Projects
+                </button>
+                <button class="filter-btn" data-category="project">
+                    <i class="fas fa-laptop-code"></i>
+                    Project Upload
+                </button>
+                <button class="filter-btn" data-category="photo">
+                    <i class="fas fa-camera"></i>
+                    Photo Generation
+                </button>
+                <button class="filter-btn" data-category="video">
+                    <i class="fas fa-video"></i>
+                    Video Generation
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="projects" id="projects">
+        <div class="container">
+            <h3 class="section-title">Featured Projects</h3>
+            <div class="projects-grid" id="projectsGrid">
+                <!-- Projects will be dynamically inserted here -->
+            </div>
+            <div class="empty-state" id="emptyState">
+                <i class="fas fa-rocket"></i>
+                <h4>No Projects Yet</h4>
+                <p>Be the first to submit your amazing hackathon project!</p>
+                <button class="btn btn-primary" onclick="openSubmissionModal()">
+                    <i class="fas fa-plus"></i>
+                    Submit First Project
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section class="statistics" id="stats">
+        <div class="container">
+            <h3 class="section-title">Voting Statistics</h3>
+            <div class="stats-grid">
+                <div class="stats-card">
+                    <div class="stats-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="stats-content">
+                        <h4>Most Voted</h4>
+                        <p id="mostVotedProject">No projects yet</p>
+                        <span class="stats-number" id="mostVotedCount">0</span>
+                    </div>
+                </div>
+                <div class="stats-card">
+                    <div class="stats-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div class="stats-content">
+                        <h4>Your Votes</h4>
+                        <p>Projects you've voted for</p>
+                        <span class="stats-number" id="userVoteCount">0</span>
+                    </div>
+                </div>
+                <div class="stats-card">
+                    <div class="stats-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stats-content">
+                        <h4>Active Voters</h4>
+                        <p>Unique voters today</p>
+                        <span class="stats-number">1</span>
+                    </div>
+                </div>
+                <div class="stats-card category-stats">
+                    <div class="stats-icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <div class="stats-content">
+                        <h4>Category Breakdown</h4>
+                        <div class="category-breakdown">
+                            <div class="category-stat">
+                                <span class="category-name">Project Upload</span>
+                                <span class="category-count" id="projectCount">0</span>
+                            </div>
+                            <div class="category-stat">
+                                <span class="category-name">Photo Generation</span>
+                                <span class="category-count" id="photoCount">0</span>
+                            </div>
+                            <div class="category-stat">
+                                <span class="category-name">Video Generation</span>
+                                <span class="category-count" id="videoCount">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Submission Modal -->
+    <div class="modal" id="submissionModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Submit Your Project</h3>
+                <button class="close-btn" id="closeBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form class="submission-form" id="submissionForm">
+                <div class="form-group">
+                    <label for="projectCategory">Project Category *</label>
+                    <select id="projectCategory" required class="category-select">
+                        <option value="">Select a category</option>
+                        <option value="project">Project Upload</option>
+                        <option value="photo">Photo Generation</option>
+                        <option value="video">Video Generation</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="projectTitle">Project Title *</label>
+                    <input type="text" id="projectTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="teamName">Team Name *</label>
+                    <input type="text" id="teamName" required>
+                </div>
+                <div class="form-group">
+                    <label for="projectDescription">Description *</label>
+                    <textarea id="projectDescription" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="projectImage">Project Image URL *</label>
+                    <input type="url" id="projectImage" required>
+                    <div class="image-preview" id="imagePreview"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="demoUrl">Demo URL</label>
+                        <input type="url" id="demoUrl">
+                    </div>
+                    <div class="form-group">
+                        <label for="githubUrl">GitHub URL</label>
+                        <input type="url" id="githubUrl">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeSubmissionModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-upload"></i>
+                        Submit Project
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content success-modal">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3>Project Submitted Successfully!</h3>
+            <p>Your project has been added to the hackathon voting system.</p>
+            <button class="btn btn-primary" onclick="closeSuccessModal()">Awesome!</button>
+        </div>
+    </div>
+
+    <!-- Voting Confirmation Modal -->
+    <div class="modal" id="voteModal">
+        <div class="modal-content vote-modal">
+            <div class="vote-icon">
+                <i class="fas fa-heart"></i>
+            </div>
+            <h3>Vote Submitted!</h3>
+            <p>Thank you for voting! Remember, you can only vote once per device.</p>
+            <button class="btn btn-primary" onclick="closeVoteModal()">Got it!</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
